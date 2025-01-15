@@ -1,79 +1,43 @@
 package com.forohub.forohub.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "topics")
 public class Topic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String titulo;
+    @Column(nullable = false)
+    private String title;
 
-    @Column(columnDefinition = "TEXT")
-    private String mensaje;
+    @Column(nullable = false)
+    private String content;
 
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
-
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
-    private String autor;
-
-    private String curso;
-
-    public enum Status {
-        ABIERTO, CERRADO
+    // Getters y Setters
+    public Long getId() {
+        return id;
     }
 
-//Getters y Setters
-    public String getTitulo() {
-        return titulo;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public String getTitle() {
+        return title;
     }
 
-    public String getMensaje() {
-        return mensaje;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
+    public String getContent() {
+        return content;
     }
 
-    public Status getStatus() {
-        return status;
+    public void setContent(String content) {
+        this.content = content;
     }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-
-    public String getCurso() {
-        return curso;
-    }
-
-    public void setCurso(String curso) {
-        this.curso = curso;
-    }
-
-
 }
