@@ -1,3 +1,4 @@
+//Proyecto ForoHub Alura ONE
 package com.forohub.forohub.dto;
 
 public class AuthRequest {

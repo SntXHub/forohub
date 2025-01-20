@@ -1,3 +1,4 @@
+//Proyecto ForoHub Alura ONE
 package com.forohub.forohub.config;
 
 import com.forohub.forohub.filter.JwtAuthenticationFilter;

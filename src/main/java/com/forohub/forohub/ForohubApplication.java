@@ -1,3 +1,4 @@
+//Proyecto ForoHub Alura ONE
 package com.forohub.forohub;
 
 import org.springframework.boot.CommandLineRunner;
@@ -18,7 +19,7 @@ public class ForohubApplication {
 		return args -> {
 			String rawPassword = "12345"; // Contraseña que deseas usar
 			String encodedPassword = passwordEncoder.encode(rawPassword);
-			System.out.println("Contraseña encriptada: " + encodedPassword);
+//			System.out.println("Contraseña encriptada: " + encodedPassword);
 		};
 	}
 }
