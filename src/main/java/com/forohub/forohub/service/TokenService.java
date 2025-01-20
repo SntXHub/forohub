@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.util.Base64;
 import java.util.Date;
 
 @Service
@@ -17,8 +18,9 @@ public class TokenService {
     private final SecretKey secretKey;
     private final Long jwtExpiration;
 
-    public TokenService(@Value("${jwt.secret}") String jwtSecret, @Value("${jwt.expiration}") Long jwtExpiration) {
-        this.secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    public TokenService(@Value("${jwt.secret}") String jwtSecret,
+                        @Value("${jwt.expiration:3600000}") Long jwtExpiration) {
+        this.secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(jwtSecret)); // Decodifica la clave Base64
         this.jwtExpiration = jwtExpiration;
     }
 
