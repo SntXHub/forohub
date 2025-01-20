@@ -3,6 +3,7 @@ package com.forohub.forohub.controller;
 import com.forohub.forohub.dto.AuthResponse;
 import com.forohub.forohub.service.TokenService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,6 +38,24 @@ public class AuthController {
         String token = tokenService.generateToken(username, role);
 
         return ResponseEntity.ok(new AuthResponse(token));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(@RequestHeader("Authorization") String token) {
+        // Eliminar el prefijo "Bearer "
+        String jwt = token.startsWith("Bearer ") ? token.substring(7) : token;
+
+        // Validar el token
+        String username = tokenService.validateToken(jwt);
+        if (username == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        // Generar un nuevo token con el mismo username y rol
+        String role = tokenService.getClaims(jwt).get("role", String.class);
+        String newToken = tokenService.generateToken(username, role);
+
+        return ResponseEntity.ok(new AuthResponse(newToken));
     }
 
     @GetMapping("/test")

@@ -35,7 +35,7 @@ ForoHub es una API RESTful desarrollada con **Spring Boot** para gestionar tópi
     - Swagger para la documentación interactiva
     - Maven como gestor de dependencias
     - IntelliJ IDEA como entorno de desarrollo
-    - Postman para automatización de pruebas y testeos
+    - Postman para automatización de pruebas y tests
 
 ## Instalación y configuración
 
@@ -54,11 +54,9 @@ ForoHub es una API RESTful desarrollada con **Spring Boot** para gestionar tópi
     spring.datasource.username=tu_usuario
     spring.datasource.password=tu_contraseña
     ```
-3. **Ejecuta las migraciones**: Flyway aplicará automáticamente las migraciones al iniciar la aplicación.
-4. **Ejecuta la aplicación**:
-    ```bash
-    mvn spring-boot:run
-    ```
+3. **Ejecutar las migraciones**: Flyway aplicará automáticamente las migraciones al iniciar la aplicación.
+4. **Ejecuta la aplicación.**
+    
 5. **Accede a la documentación de la API**:
     - Swagger UI: http://localhost:8080/swagger-ui.html
     - Documentación JSON: http://localhost:8080/v3/api-docs
@@ -126,11 +124,13 @@ ForoHub es una API RESTful desarrollada con **Spring Boot** para gestionar tópi
    (2024/25)
 
 ## Agradecimientos
-- Al Programa Alura LATAM + Oracle Next Education, a la comunidad de Spring Boot y Stack Overflow por los recursos y 
-  ejemplos 
-  compartidos.
-- A Swagger por simplificar la documentación de APIs.
-- A Flyway por las herramientas de migración.
+
+- Al Programa Alura Latam + Oracle Next Education por su profesionalismo, calidad de servicio y compromiso con la 
+  educación en nuestras comunidades. Su dedicación y esfuerzo han sido fundamentales para el éxito de nuestro 
+  aprendizaje, nuestros proyectos y el crecimiento educativo. ¡Gracias por su invaluable oportunidad, apoyo y 
+  colaboración!
+  
+  [Alura ONE](https://www.oracle.com/ar/education/oracle-next-education/)
 
 ## Licencia
    Este proyecto está licenciado bajo la licencia MIT. Puedes usarlo, modificarlo y distribuirlo libremente.

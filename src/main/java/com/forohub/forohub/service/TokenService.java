@@ -44,4 +44,13 @@ public class TokenService {
             return null;
         }
     }
+
+    public boolean isTokenExpired(String token) {
+        try {
+            Date expiration = getClaims(token).getExpiration();
+            return expiration.before(new Date());
+        } catch (Exception e) {
+            return true; // Si hay un error, asumimos que el token está expirado
+        }
+    }
 }
