@@ -10,3 +10,5 @@ CREATE TABLE IF NOT EXISTS users (
 -- Agregar un usuario inicial (opcional, para pruebas)
 INSERT INTO users (username, password, enabled, role) VALUES
 ('admin', '$2a$10$7QmxTIdfh/1fYdWbG6YksOon7BuFeivU/3E0QyZ9ZP1MsJX7MxOla', true, 'ROLE_ADMIN');
+
+ALTER TABLE users ADD COLUMN password_updated_at DATETIME NULL;

@@ -2,10 +2,16 @@ package com.forohub.forohub.service;
 
 import com.forohub.forohub.model.User;
 import com.forohub.forohub.repository.UserRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Collections;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -18,16 +24,28 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Busca el usuario en la base de datos
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
 
-        // Construye un objeto UserDetails con los datos del usuario
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername()) // Nombre de usuario
-                .password(user.getPassword()) // Contraseña encriptada
-                .roles(user.getRole().replace("ROLE_", "")) // Roles (sin el prefijo ROLE_)
-                .build();
+        // Verificar si la contraseña ha expirado
+        if (user.getPasswordUpdatedAt() != null) {
+            long daysSinceUpdate = Duration.between(
+                    user.getPasswordUpdatedAt().atZone(ZoneId.systemDefault()).toInstant(),
+                    Instant.now()
+            ).toDays();
+            if (daysSinceUpdate > 90) {
+                throw new RuntimeException("Contraseña expirada. Por favor, actualízala.");
+            }
+        }
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getEnabled(),
+                true, // Cuenta no expirada
+                true, // Credenciales no expiradas
+                true, // Cuenta no bloqueada
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))
+        );
     }
 }
-

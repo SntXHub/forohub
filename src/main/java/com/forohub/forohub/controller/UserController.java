@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -70,7 +72,8 @@ public class UserController {
         return userRepository.findById(id)
                 .map(user -> {
                     user.setUsername(userDetails.getUsername());
-                    user.setPassword(passwordEncoder.encode(userDetails.getPassword())); // Encripta la nueva contraseña
+                    user.setPassword(passwordEncoder.encode(userDetails.getPassword())); // Encripta la contraseña
+                    user.setPasswordUpdatedAt(LocalDateTime.now()); // Registra la fecha de actualización
                     user.setEnabled(userDetails.getEnabled());
                     user.setRole(userDetails.getRole());
                     userRepository.save(user);

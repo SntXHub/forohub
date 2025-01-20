@@ -45,6 +45,19 @@ public class TokenService {
         }
     }
 
+    public Claims getClaims(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(secretKey) // Usa la clave secreta para firmar el token
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody(); // Extrae el cuerpo de los claims
+        } catch (Exception e) {
+            System.out.println("Error al obtener los claims del token: " + e.getMessage());
+            return null; // Si hay un error, retorna null
+        }
+    }
+
     public boolean isTokenExpired(String token) {
         try {
             Date expiration = getClaims(token).getExpiration();

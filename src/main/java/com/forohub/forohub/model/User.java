@@ -1,8 +1,7 @@
 package com.forohub.forohub.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -13,31 +12,19 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "El nombre de usuario es obligatorio")
     private String username;
 
     @Column(nullable = false)
-    @NotBlank(message = "La contraseña es obligatoria")
     private String password;
 
     @Column(nullable = false)
-    @NotNull(message = "El estado habilitado/deshabilitado es obligatorio")
     private Boolean enabled;
 
     @Column(nullable = false)
-    @NotBlank(message = "El rol es obligatorio")
     private String role;
 
-    // Constructor vacío (necesario para JPA)
-    public User() {}
-
-    // Constructor con parámetros (útil para pruebas y creación manual de objetos)
-    public User(String username, String password, Boolean enabled, String role) {
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-        this.role = role;
-    }
+    @Column(name = "password_updated_at", nullable = true)
+    private LocalDateTime passwordUpdatedAt; // Campo para registrar la última actualización de la contraseña
 
     // Getters y Setters
     public Long getId() {
@@ -80,28 +67,11 @@ public class User {
         this.role = role;
     }
 
-    // Sobrescribe equals y hashCode (opcional pero recomendado)
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return id != null && id.equals(user.id);
+    public LocalDateTime getPasswordUpdatedAt() {
+        return passwordUpdatedAt;
     }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
-
-    // Representación como cadena (opcional, útil para depuración)
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", enabled=" + enabled +
-                ", role='" + role + '\'' +
-                '}';
+    public void setPasswordUpdatedAt(LocalDateTime passwordUpdatedAt) {
+        this.passwordUpdatedAt = passwordUpdatedAt;
     }
 }
