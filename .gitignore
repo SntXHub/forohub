@@ -32,3 +32,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Configuración sensible ###
+# Ignorar configuraciones locales
+application-local.properties
+
