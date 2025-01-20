@@ -1,5 +1,6 @@
 package com.forohub.forohub.service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -16,19 +17,14 @@ public class TokenService {
     private final Long jwtExpiration;
 
     public TokenService(@Value("${jwt.secret}") String jwtSecret, @Value("${jwt.expiration}") Long jwtExpiration) {
-        this.secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes()); // Crea la clave secreta
+        this.secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
         this.jwtExpiration = jwtExpiration;
-    }
-
-    // Método para obtener la clave secreta
-    public SecretKey getSecretKey() {
-        return secretKey;
     }
 
     public String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
-                .claim("authorities", role) // Incluye el rol
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -44,7 +40,8 @@ public class TokenService {
                     .getBody()
                     .getSubject();
         } catch (Exception e) {
-            return null; // Token inválido
+            System.out.println("Error al validar el token: " + e.getMessage());
+            return null;
         }
     }
 }

@@ -34,7 +34,7 @@ public class UserController {
         // Guarda el usuario en la base de datos
         userRepository.save(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping

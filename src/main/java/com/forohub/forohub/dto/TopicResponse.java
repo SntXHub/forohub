@@ -1,7 +1,6 @@
 package com.forohub.forohub.dto;
 
 import com.forohub.forohub.model.Topic;
-
 import java.time.LocalDateTime;
 
 public class TopicResponse {
@@ -10,22 +9,22 @@ public class TopicResponse {
     private String title;
     private String content;
     private String course;
-    private String status;
+    private String status; // Cambiará el enum a String
     private LocalDateTime createdAt;
     private String authorUsername;
 
-    // Constructor vacío
-    public TopicResponse() {
-    }
-
-    // Constructor con parámetros
+    // Constructor
     public TopicResponse(Topic topic) {
         this.id = topic.getId();
         this.title = topic.getTitle();
         this.content = topic.getContent();
         this.course = topic.getCourse();
-        this.status = topic.getStatus();
-        this.authorUsername = topic.getAuthor().getUsername(); // Asumiendo que Topic tiene un campo 'author' de tipo User
+
+        // Convertir el enum Topic.Status a String
+        this.status = topic.getStatus().name();
+
+        this.createdAt = topic.getCreatedAt();
+        this.authorUsername = topic.getAuthor().getUsername();
     }
 
     // Getters y Setters
@@ -85,3 +84,4 @@ public class TopicResponse {
         this.authorUsername = authorUsername;
     }
 }
+

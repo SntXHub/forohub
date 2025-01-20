@@ -1,14 +1,13 @@
 package com.forohub.forohub.controller;
 
+import com.forohub.forohub.dto.AuthResponse;
 import com.forohub.forohub.service.TokenService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import com.forohub.forohub.dto.AuthRequest;
 
 import java.util.Map;
 
@@ -25,25 +24,25 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid Map<String, String> authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authRequest.getUsername(),
-                        authRequest.getPassword()
+                        authRequest.get("username"),
+                        authRequest.get("password")
                 )
         );
 
-        org.springframework.security.core.userdetails.User user =
-                (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+        String username = authentication.getName();
+        String role = authentication.getAuthorities().iterator().next().getAuthority();
+        String token = tokenService.generateToken(username, role);
 
-        String role = user.getAuthorities().stream()
-                .findFirst()
-                .map(Object::toString)
-                .orElseThrow(() -> new RuntimeException("Role not found for user"));
+        return ResponseEntity.ok(new AuthResponse(token));
+    }
 
-        String token = tokenService.generateToken(user.getUsername(), role);
-
-        return ResponseEntity.ok(token);
+    @GetMapping("/test")
+    public String testEndpoint() {
+        return "AuthController está funcionando correctamente.";
     }
 }
+
 
