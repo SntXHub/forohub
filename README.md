@@ -37,46 +37,6 @@ ForoHub es una API RESTful desarrollada con **Spring Boot** para gestionar tópi
     - IntelliJ IDEA como entorno de desarrollo
     - Postman para automatización de pruebas y tests
 
-## Seguridad
-
-La seguridad es un aspecto fundamental en el desarrollo de esta API. A continuación, se describen las prácticas implementadas para proteger los datos sensibles y garantizar la integridad del sistema:
-
-**Protección de datos sensibles**
-
-- **Contraseñas de usuarios:** Las contraseñas se almacenan de forma segura en la base de datos utilizando un algoritmo de hash (BCrypt). Esto asegura que las contraseñas nunca se guarden en texto plano y que no puedan ser fácilmente descifradas, incluso si la base de datos es comprometida.
-- **Tokens JWT:** Los tokens generados para la autenticación están firmados con una clave secreta (definida en las variables de entorno) y tienen un tiempo de expiración configurado para prevenir su uso indebido. Estos tokens se transmiten únicamente en encabezados HTTP para protegerlos de ataques comunes como CSRF.
-
-**Variables de entorno**
-
-Para evitar que las claves sensibles, como JWT\_SECRET o las credenciales de la base de datos, queden expuestas en el código fuente o en repositorios públicos, se utilizan variables de entorno:
-
-- Las configuraciones sensibles se definen en un archivo local, por ejemplo, application-local.properties.
-- Este archivo está incluido en el archivo .gitignore para evitar su rastreo y subida a GitHub.
-
-**Prácticas recomendadas**
-
-1. **Clave secreta para JWT:**
-    1. Define una clave secreta única y robusta en la variable JWT\_SECRET.
-    1. Mantén la clave en un archivo seguro no rastreado por Git.
-1. **Expiración de tokens:**
-    1. Configura un tiempo de expiración razonable para los tokens (por defecto, 1 hora).
-    1. Esto asegura que un token robado o comprometido no sea válido indefinidamente.
-1. **Rotación de claves:**
-    1. Implementa una estrategia para rotar claves secretas de JWT periódicamente y asegura que los tokens antiguos se invaliden.
-1. **Manejo de contraseñas caducadas:**
-    1. Las contraseñas de los usuarios tienen un periodo de validez configurado (por ejemplo, 90 días).
-    1. Si una contraseña ha expirado, el usuario deberá actualizarla para continuar accediendo al sistema.
-
-**Consideraciones adicionales**
-
-- **Cifrado de datos sensibles en tránsito:** Toda la comunicación con la API debería realizarse a través de HTTPS para proteger los datos en tránsito.
-- **Monitoreo y auditoría:** Implementa herramientas para rastrear accesos y detectar posibles intentos de intrusión.
-- **Autorización por roles:** Se utiliza Spring Security para gestionar las autorizaciones y asegurar que cada usuario solo pueda realizar las operaciones permitidas para su rol.
-
-**Conclusión**
-
-Estas medidas aseguran que los datos sensibles y las credenciales de los usuarios estén protegidos, minimizando los riesgos de seguridad y garantizando el cumplimiento de buenas prácticas en el desarrollo de software.
-
 ## Instalación y configuración
 
 1. **Clona el repositorio**:

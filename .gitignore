@@ -18,6 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
+application-local.properties
 
 ### NetBeans ###
 /nbproject/private/
@@ -31,8 +32,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-### Configuración sensible ###
-# Ignorar configuraciones locales
-application-local.properties
-
