@@ -23,25 +23,38 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Crear un nuevo usuario.
+     */
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody @Valid User user) {
-        // Encripta la contraseña
+        // Validar si el usuario ya existe
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(null); // Retorna 409 si el usuario ya existe
+        }
+
+        // Encripta la contraseña antes de guardar
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // Imprime la contraseña encriptada en la consola para verificar
-        System.out.println("Contraseña encriptada: " + user.getPassword());
-
         // Guarda el usuario en la base de datos
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
-        return ResponseEntity.ok(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
+    /**
+     * Obtener todos los usuarios.
+     */
     @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
     }
 
+    /**
+     * Obtener un usuario por ID.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userRepository.findById(id)
@@ -49,6 +62,9 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * Actualizar un usuario.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody @Valid User userDetails) {
         return userRepository.findById(id)
@@ -63,6 +79,9 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * Eliminar un usuario.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         if (userRepository.existsById(id)) {

@@ -1,4 +1,4 @@
--- Crea la tabla 'topics'
+-- Crear la tabla 'topics' si no existe
 CREATE TABLE IF NOT EXISTS topics (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -7,11 +7,5 @@ CREATE TABLE IF NOT EXISTS topics (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status ENUM('ABIERTO', 'CERRADO') NOT NULL,
     user_id BIGINT NOT NULL,
-    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
--- Inserta datos iniciales (si es necesario)
-INSERT INTO topics (title, content, course, status, user_id)
-VALUES
-('Primer Tópico', 'Contenido del primer tópico', 'Curso A', 'ABIERTO', 1),
-('Segundo Tópico', 'Contenido del segundo tópico', 'Curso B', 'CERRADO', 1);
